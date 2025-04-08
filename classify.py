@@ -6,7 +6,7 @@ from config import IMAGE_SIZE
 import sys
 import os
 
-# Define your class names here, in the same order as in your training dataset
+# Define your class names here
 class_names = ['non_perforated', 'perforated']
 
 # Load model
@@ -21,9 +21,19 @@ transform = transforms.Compose([
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
+# Load and prepare image (handles .tiff, .jpg, etc.)
+def load_image(image_path):
+    image = Image.open(image_path)
+    
+    # Convert all non-RGB formats (e.g., grayscale, CMYK)
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+    
+    return image
+
 # Prediction function
 def predict(image_path):
-    image = Image.open(image_path).convert("RGB")
+    image = load_image(image_path)
     input_tensor = transform(image).unsqueeze(0)
 
     with torch.no_grad():
@@ -32,16 +42,16 @@ def predict(image_path):
     
     return class_names[pred]
 
-# Run from CLI
+# CLI interface
 if __name__ == "__main__":
-    print("✅ Script started...")  # DEBUG LINE
+    print("Script started...")
 
     if len(sys.argv) != 2:
-        print("Usage: python3 classify.py path/to/image.jpg")
+        print("Usage: python3 classify.py path/to/image.[jpg|tiff]")
         sys.exit(1)
 
     img_path = sys.argv[1]
-    print(f"📷 Image path received: {img_path}")  # DEBUG LINE
+    print(f"📷 Image path received: {img_path}")
 
     if not os.path.exists(img_path):
         print(f"Error: {img_path} does not exist.")
