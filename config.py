@@ -1,4 +1,4 @@
-DATA_DIR = "data"
+DATA_DIR = "/Volumes/Expansion/THESIS"
 BATCH_SIZE = 16
 NUM_EPOCHS = 10
 LR = 1e-4

@@ -1,4 +1,3 @@
-# label_collector.py
 
 import os
 import csv
@@ -33,7 +32,7 @@ class LabelCollector:
             writer = csv.writer(f)
             writer.writerow(["filename", "label"])
             writer.writerows(self.rows)
-        print(f"\n✅ CSV created: {self.output_csv} ({len(self.rows)} labeled images)")
+        print(f"\n CSV created: {self.output_csv} ({len(self.rows)} labeled images)")
 
     def run(self):
         self.scan_images()
